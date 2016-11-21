@@ -270,10 +270,30 @@ app.get('/confirmTest', (req, resp)=>{
   
   
 })
-app.get('/retern:id', (req, resp)=>{
+app.post('/return', (req, resp)=>{
   //change status to be returned, then 
-  
+   var preID = req.body.prescriptionID;
+  var ans;
+  var PatientHN;
+  request
+    .get(`${url}/dispensary/${preID}.json`)
+    .end((err,res) => {
+      console.log(JSON.stringify(res.body))
+      ans = res.body
+      PatientHN = ans.Patient.HN
+     })
+  request
+    .delete(`${url}/dispensary/${preID}.json`)
+    .end((err,res) => {
+      console.log(JSON.stringify(res.body))
+      
+      
+     })
+  request.post(`${url}/Return/${PatientHN}.json`);
+  request.send(ans);
+  request.end((err, res) => console.log(err, res.ok));
 })
+
 
 
 app.put('/testPost:id', (req, resp)=>{
