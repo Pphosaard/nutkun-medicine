@@ -107,22 +107,22 @@ app.post('/postDispensary', (req, resp) => {
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
   //dispensary.name = req.body.name;  
  // var id = dispensary["dispensary" + req.params.id] ;
-  var HNP = req.body.Patient.HN;
-  var nameP = req.body.Patient.name;
-	var surnameP = req.body.Patient.surname;
-	var title = req.body.Medicine.drug.title;
-	var id = req.body.Medicine.drug.id;
-	var descrip = req.body.Medicine.drug.descrip;
+  var HNP = req.body.patient.hn;
+  var nameP = req.body.patient.name;
+	var surenameP = req.body.patient.surename;
+	var title = req.body.medicine.drug.title;
+	var id = req.body.medicine.drug.id;
+	var descrip = req.body.medicine.drug.descrip;
   var dose = req.body.dose;
   var status = req.body.statusD;
-  var HND = req.body.Doctor.HN;
-  var nameD = req.body.Doctor.name;
-  var surnameD = req.body.Doctor.surname;
+  var HND = req.body.doctor.hn;
+  var nameD = req.body.doctor.name;
+  var surenameD = req.body.doctor.surename;
   
     request
     .post(`${url}/dispensary.json`)
     
-    .send(`{"Doctor":{"HN":${HND},"name":${nameD},"surname": ${surnameD}},"Medicine":{"medicine1":{"description":${descrip},"id":${id},"name":${title}}},"Patient":{"HN":${HNP},"name":${nameP},"surname": ${surnameP} },"dose":{"medicine1":${dose}},"status":${status}}`)
+    .send(`{"doctor":{"HN":${HND},"name":${nameD},"surename": ${surenameD}},"medicine":{"medicine1":{"description":${descrip},"id":${id},"name":${title}}},"patient":{"HN":${HNP},"name":${nameP},"surename": ${surenameP} },"dose":{"medicine1":${dose}},"status":${status}}`)
    
     .end((err, res) => console.log(err, res.ok))
       
@@ -135,13 +135,27 @@ app.post('/postHistory', (req, resp) => {
  // var id = dispensary["dispensary" + req.params.id] ;
 
     request
-    .post(`${url}/History/hn-patient3.json`)
+    .post(`${url}/history/hn-patient3.json`)
     
-    .send('{"Doctor":{"HN":"hn-doctor2","name":"จิรัฐ","surname": "อยากเป็นหมอ2"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"hn-patient3","name":"Yoyo","surname":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
+    .send('{"doctor":{"hn":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{hn":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
     .end((err, res) => console.log(err, res.ok))
       
       
 })
+app.post('/postDispensaryTest', (req, resp) => {
+ // var dispensary = new Dispensary();      // create a new instance of the Bear model
+  //dispensary.name = req.body.name;  
+ // var id = dispensary["dispensary" + req.params.id] ;
+
+    request
+    .post(`${url}/dispensary.json`)
+    
+    .send('{"doctor":{"hn":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{"hn":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"waiting"}')
+    .end((err, res) => console.log(err, res.ok))
+      
+      
+})
+
 
 
 
@@ -204,7 +218,7 @@ app.post('/getHistory', (req, resp)=>{//do it
   var id = req.body.patientID;
   //var cid = req.params.id;
   //var id = cid.substring(1,cid.lenght);
-  request.get(`${url}/History/${id}.json`);
+  request.get(`${url}/history/${id}.json`);
   request.end((err, res) => {
       const history = res.body;
       console.log('history', history);
@@ -219,7 +233,7 @@ app.get('/getHistoryTest/:id', (req, res)=>{//test
   var ee = req.params.id;
   var id = ee.substring(1,5);
   
-  request.get(`${url}/History.json`);
+  request.get(`${url}/history.json`);
   console.log(res.body[id]);
   return res.send(res.body[id])});
    
@@ -249,13 +263,13 @@ app.post('/confirm', (req, resp)=>{//Here
 //  })
   var preID = req.body.prescriptionID;
   var ans;
-  var PatientHN;
+  var patientHN;
   request
     .get(`${url}/dispensary/${preID}.json`)
     .end((err,res) => {
       console.log(JSON.stringify(res.body))
       ans = res.body
-      PatientHN = ans.Patient.HN
+      patientHN = ans.patient.hn
      })
   request
     .delete(`${url}/dispensary/${preID}.json`)
@@ -264,7 +278,7 @@ app.post('/confirm', (req, resp)=>{//Here
       
       
      })
-  request.post(`${url}/History/${PatientHN}.json`);
+  request.post(`${url}/history/${patientHN}.json`);
   request.send(ans);
   request.end((err, res) => console.log(err, res.ok));
   
@@ -304,13 +318,13 @@ app.post('/return', (req, resp)=>{
   //change status to be returned, then 
    var preID = req.body.prescriptionID;
   var ans;
-  var PatientHN;
+  var patientHN;
   request
     .get(`${url}/dispensary/${preID}.json`)
     .end((err,res) => {
       console.log(JSON.stringify(res.body))
       ans = res.body
-      PatientHN = ans.Patient.HN
+      patientHN = ans.patient.hn
      })
   request
     .delete(`${url}/dispensary/${preID}.json`)
@@ -319,7 +333,7 @@ app.post('/return', (req, resp)=>{
       
       
      })
-  request.post(`${url}/Return/${PatientHN}.json`);
+  request.post(`${url}/return/${patientHN}.json`);
   request.send(ans);
   request.end((err, res) => console.log(err, res.ok));
 })
