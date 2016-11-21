@@ -16,7 +16,7 @@ request
   .send('{"name":"pada","pet":"nori"}')
   .end((err, res) => console.log(err, res.ok))
 */
-app.get('/param/:id', (req, res) => {
+/*app.get('/param/:id', (req, res) => {
   console.log(req.params)
   return res.send(req.params.id)})
   
@@ -45,7 +45,7 @@ app.get('/drug', (req, resp) => {
       const d1 = Object.keys(drug).filter(d => drug[d].id === 'M0002')
       console.log('d1', d1[0]);
       return resp.send(drug[d1[0]])})
-})
+})*/
 app.get('/dispensary', (req, resp) => {
   request
     .get(`${url}/dispensary.json`)
@@ -57,7 +57,7 @@ app.get('/dispensary', (req, resp) => {
       
       
     })
-app.get('/dispensaryTest', (req, resp) => {
+/*app.get('/dispensaryTest', (req, resp) => {
   request.get(`${url}/dispensary.json`);
   var dispensary = resp.body;
   var waitingList;
@@ -75,8 +75,8 @@ app.get('/dispensaryTest', (req, resp) => {
     return resp.send(waitingList)});
       
       
-    })
-app.post('/postDispensary', (req, resp) => {
+    })*/
+/*app.post('/postDispensary', (req, resp) => {
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
   //dispensary.name = req.body.name;  
  // var id = dispensary["dispensary" + req.params.id] ;
@@ -95,12 +95,12 @@ app.post('/postDispensary', (req, resp) => {
     request
     .post(`${url}/dispensary.json`)
     
-    .send('{"Doctor":{"HN":HND,"name":nameD,"surname": surnameD},"Medicine":{"medicine1":{"description":descrip,"id":id,"name":title}},"Patient":{"HN":HNP,"name":nameP,"surname":surnameP},"dose":{"medicine1":dose},"status":status}')
+    .send('{"Doctor":{"HN":'HND',"name":'nameD',"surname": 'surnameD'},"Medicine":{"medicine1":{"description":'descrip',"id":'id',"name":'title'}},"Patient":{"HN":'HNP',"name":'nameP',"surname":'surnameP'},"dose":{"medicine1":'dose'},"status":'status'}')
    
     .end((err, res) => console.log(err, res.ok))
       
       
-})
+})*/
 
 app.post('/postHistory', (req, resp) => {
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
@@ -108,9 +108,48 @@ app.post('/postHistory', (req, resp) => {
  // var id = dispensary["dispensary" + req.params.id] ;
 
     request
-    .post(`${url}/History.json`)
+    .post(`${url}/History/1045.json`)
     
-    .send('{"Doctor":{"HN":"2089","name":"Tera","surname": "N"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"1001","name":"Mitsuha","surname":"M"},"dose":{"medicine1":"1"},"status":"done"}')
+    .send('{"Doctor":{"HN":"2089","name":"Tera","surname": "N"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"1045","name":"Yoyo","surname":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
+    .end((err, res) => console.log(err, res.ok))
+      
+      
+})
+/*app.post('/postTestVa', (req, resp) => {//Test variable
+ // var dispensary = new Dispensary();      // create a new instance of the Bear model
+  //dispensary.name = req.body.name;  
+ // var id = dispensary["dispensary" + req.params.id] ;
+    var test = req.body;
+    request
+    .post(`${url}/Atest.json`)
+    .send(test)
+    //.send({"name":test})//Thissssssssssssssssssssssssssssssssssssssssss
+    .end((err, res) => console.log(err, res.ok))})
+      
+      
+app.post('/postTestN', (req, resp) => {//Test variable
+ // var dispensary = new Dispensary();      // create a new instance of the Bear model
+  //dispensary.name = req.body.name;  
+ // var id = dispensary["dispensary" + req.params.id] ;
+    var test = req.body;
+    var t = req.bady.name;
+    request
+    .post(`${url}/Atest.json`)
+    .send({test})
+    //.send({"name":test})//Thissssssssssssssssssssssssssssssssssssssssss
+    .end((err, res) => console.log(err, res.ok))
+      
+      
+})*/
+app.post('/postReturn', (req, resp) => {
+ // var dispensary = new Dispensary();      // create a new instance of the Bear model
+  //dispensary.name = req.body.name;  
+ // var id = dispensary["dispensary" + req.params.id] ;
+
+    request
+    .post(`${url}/Return.json`)
+    
+    .send('{"Doctor":{"HN":"2089","name":"Tera","surname": "N"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"1001","name":"Mitsuha","surname":"M"},"dose":{"medicine1":"1"},"status":"return"}')
     .end((err, res) => console.log(err, res.ok))
       
       
@@ -130,21 +169,22 @@ app.post('/postHistory', (req, resp) => {
   
   
 })*/
-app.get('/getHistory/:id', (req, resp)=>{
+app.post('/getHistory', (req, resp)=>{//do it
   //status done
-  var id = req.body.id;
-  
-  request.get(`${url}/History.json`);
+  var id = req.body.patientID;
+  //var cid = req.params.id;
+  //var id = cid.substring(1,cid.lenght);
+  request.get(`${url}/History/${id}.json`);
   request.end((err, res) => {
       const history = res.body;
-      console.log('history[id]', history[id]);
-      return resp.send(history[id])});
+      console.log('history', history);
+      return resp.send(history)});
      
    
   
   
 })
-app.get('/getHistoryTest/:id', (req, res)=>{//test
+/*app.get('/getHistoryTest/:id', (req, res)=>{//test
   //status done
   var ee = req.params.id;
   var id = ee.substring(1,5);
@@ -154,14 +194,20 @@ app.get('/getHistoryTest/:id', (req, res)=>{//test
   return res.send(res.body[id])});
    
   
-  
+  */
 
-app.get('/getAllergy', (req, resp)=>{
+/*app.get('/getAllergy', (req, resp)=>{
   //get data then macth with medicine in dispensary
   
   
 })
-app.get('/confirm', (req, resp)=>{
+app.post('/confirmPre',(req,resp)=>{
+  var presciptID = req.body.prescriptionID;
+  request.get(`${url}/dispensary.json`)
+  
+  
+})*/
+app.get('/confirm', (req, resp)=>{//Here
   //change status to be done
  // var id = dispensary["dispensary" + req.params.id] ;
 // var prescriptionID = req.body.prescriptionID;
@@ -172,13 +218,26 @@ app.get('/confirm', (req, resp)=>{
     
 //  })
   var preID = req.body.prescriptionID;
-  request.get('${url}/dispensary.json');
-  var pre = resp.body;
-  var d = Object.keys(pre).filter(d => pre[d].id === preID);
-  var ans = pre[d];
-  request.post(`${url}/History.json`);
+  var ans;
+  var PatientHN;
+  request
+    .get(`${url}/dispensary/${preID}.json`)
+    .end((err,res) => {
+      console.log(JSON.stringify(res.body))
+      ans = res.body
+      PatientHN = ans.Patient.HN
+     })
+  request
+    .delete(`${url}/dispensary/${preID}.json`)
+    .end((err,res) => {
+      console.log(JSON.stringify(res.body))
+      
+      
+     })
+  request.post(`${url}/History/${PatientHN}.json`);
   request.send(ans);
   request.end((err, res) => console.log(err, res.ok));
+  
   
 })
 app.get('/confirmTest', (req, resp)=>{
@@ -217,7 +276,7 @@ app.get('/retern:id', (req, resp)=>{
 })
 
 
-app.put('/testPost:id', (req, resp)=>{
+/*app.put('/testPost:id', (req, resp)=>{
   var id = req.params.id;
   var name = req.body.name;
   request
@@ -227,7 +286,7 @@ app.put('/testPost:id', (req, resp)=>{
   
 })
 
-
+*/
 app.get('*', (req, res) => res.send('hi'))
 
 app.listen(3000, function () {
