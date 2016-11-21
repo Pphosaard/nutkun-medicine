@@ -16,7 +16,7 @@ request
   .send('{"name":"pada","pet":"nori"}')
   .end((err, res) => console.log(err, res.ok))
 */
-app.get('/param/:id', (req, res) => {
+/*app.get('/param/:id', (req, res) => {
   console.log(req.params)
   return res.send(req.params.id)})
   
@@ -33,7 +33,7 @@ app.get('/yr/:id', (req, res) => {
 
   
   //console.log(req.params)
-  //return res.send(req.params.id)})
+  //return res.send(req.params.id)})*/
 
 app.get('/drug', (req, resp) => {
   //res.send('hi')
@@ -46,6 +46,33 @@ app.get('/drug', (req, resp) => {
       console.log('d1', d1[0]);
       return resp.send(drug[d1[0]])})
 })
+app.get('/medicine', (req, resp) => {
+  //res.send('hi')
+  request
+    .get(`${url}/drug.json`)
+    //.send('{"name":"pada","pet":"nori"}')
+    .end((err, res) => {
+      const drug = res.body
+     
+      console.log('drug', drug);
+      return resp.send(drug)})
+})
+
+app.get('/getReturn', (req, resp) => {
+  //res.send('hi')
+  request
+    .get(`${url}/return.json`)
+    //.send('{"name":"pada","pet":"nori"}')
+    .end((err, res) => {
+      const drug = res.body
+     
+      console.log('drug', drug);
+      return resp.send(drug)})
+})
+
+
+
+
 app.get('/dispensary', (req, resp) => {
   request
     .get(`${url}/dispensary.json`)
@@ -108,13 +135,16 @@ app.post('/postHistory', (req, resp) => {
  // var id = dispensary["dispensary" + req.params.id] ;
 
     request
-    .post(`${url}/History/1045.json`)
+    .post(`${url}/History/hn-patient3.json`)
     
-    .send('{"Doctor":{"HN":"2089","name":"Tera","surname": "N"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"1045","name":"Yoyo","surname":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
+    .send('{"Doctor":{"HN":"hn-doctor2","name":"จิรัฐ","surname": "อยากเป็นหมอ2"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"hn-patient3","name":"Yoyo","surname":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
     .end((err, res) => console.log(err, res.ok))
       
       
 })
+
+
+
 app.post('/postTestVa', (req, resp) => {//Test variable
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
   //dispensary.name = req.body.name;  
@@ -207,7 +237,7 @@ app.post('/confirmPre',(req,resp)=>{
   
   
 })
-app.get('/confirm', (req, resp)=>{//Here
+app.post('/confirm', (req, resp)=>{//Here
   //change status to be done
  // var id = dispensary["dispensary" + req.params.id] ;
 // var prescriptionID = req.body.prescriptionID;
@@ -293,7 +323,6 @@ app.post('/return', (req, resp)=>{
   request.send(ans);
   request.end((err, res) => console.log(err, res.ok));
 })
-
 
 
 app.put('/testPost:id', (req, resp)=>{
