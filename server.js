@@ -107,7 +107,7 @@ app.post('/postDispensary', (req, resp) => {
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
   //dispensary.name = req.body.name;  
  // var id = dispensary["dispensary" + req.params.id] ;
-  var HNP = req.body.patient.hn;
+  var HNP = req.body.patient.hospitalID;
   var nameP = req.body.patient.name;
 	var surenameP = req.body.patient.surename;
 	var title = req.body.medicine.drug.title;
@@ -115,14 +115,14 @@ app.post('/postDispensary', (req, resp) => {
 	var descrip = req.body.medicine.drug.descrip;
   var dose = req.body.dose;
   var status = req.body.statusD;
-  var HND = req.body.doctor.hn;
+  var HND = req.body.doctor.hospitalID;
   var nameD = req.body.doctor.name;
   var surenameD = req.body.doctor.surename;
   
     request
     .post(`${url}/dispensary.json`)
     
-    .send(`{"doctor":{"HN":${HND},"name":${nameD},"surename": ${surenameD}},"medicine":{"medicine1":{"description":${descrip},"id":${id},"name":${title}}},"patient":{"HN":${HNP},"name":${nameP},"surename": ${surenameP} },"dose":{"medicine1":${dose}},"status":${status}}`)
+    .send(`{"doctor":{"hospitalID":${HND},"name":${nameD},"surename": ${surenameD}},"medicine":{"medicine1":{"description":${descrip},"id":${id},"name":${title}}},"patient":{"hospitalID":${HNP},"name":${nameP},"surename": ${surenameP} },"dose":{"medicine1":${dose}},"status":${status}}`)
    
     .end((err, res) => console.log(err, res.ok))
       
@@ -137,7 +137,7 @@ app.post('/postHistory', (req, resp) => {
     request
     .post(`${url}/history/hn-patient3.json`)
     
-    .send('{"doctor":{"hn":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{hn":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
+    .send('{"doctor":{"hospitalID":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{"hospitalID":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"done"}')
     .end((err, res) => console.log(err, res.ok))
       
       
@@ -150,7 +150,7 @@ app.post('/postDispensaryTest', (req, resp) => {
     request
     .post(`${url}/dispensary.json`)
     
-    .send('{"doctor":{"hn":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{"hn":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"waiting"}')
+    .send('{"doctor":{"hospitalID":"hn-doctor2","name":"จิรัฐ","surename": "อยากเป็นหมอ2"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":"hospitalID":"hn-patient3","name":"Yoyo","surename":"Y"},"dose":{"medicine1":"2"},"status":"waiting"}')
     .end((err, res) => console.log(err, res.ok))
       
       
@@ -159,41 +159,16 @@ app.post('/postDispensaryTest', (req, resp) => {
 
 
 
-app.post('/postTestVa', (req, resp) => {//Test variable
- // var dispensary = new Dispensary();      // create a new instance of the Bear model
-  //dispensary.name = req.body.name;  
- // var id = dispensary["dispensary" + req.params.id] ;
-    var test = req.body;
-    request
-    .post(`${url}/Atest.json`)
-    .send(test)
-    //.send({"name":test})//Thissssssssssssssssssssssssssssssssssssssssss
-    .end((err, res) => console.log(err, res.ok))})
-      
-      
-app.post('/postTestN', (req, resp) => {//Test variable
- // var dispensary = new Dispensary();      // create a new instance of the Bear model
-  //dispensary.name = req.body.name;  
- // var id = dispensary["dispensary" + req.params.id] ;
-    var test = req.body;
-    var t = req.bady.name;
-    request
-    .post(`${url}/Atest.json`)
-    .send({test})
-    //.send({"name":test})//Thissssssssssssssssssssssssssssssssssssssssss
-    .end((err, res) => console.log(err, res.ok))
-      
-      
-})
+
 app.post('/postReturn', (req, resp) => {
  // var dispensary = new Dispensary();      // create a new instance of the Bear model
   //dispensary.name = req.body.name;  
  // var id = dispensary["dispensary" + req.params.id] ;
 
     request
-    .post(`${url}/Return.json`)
+    .post(`${url}/return.json`)
     
-    .send('{"Doctor":{"HN":"2089","name":"Tera","surname": "N"},"Medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"Patient":{"HN":"1001","name":"Mitsuha","surname":"M"},"dose":{"medicine1":"1"},"status":"return"}')
+    .send('{"doctor":{"hospitalID":"2089","name":"Tera","surename": "N"},"medicine":{"medicine1":{"description":"Ranitidine Tablets, USP are a competitive, reversible inhibitor of the action of histamine at the histamine H2-receptors, including receptors on the gastric cells.","id":"M0003","name":"Ranitidine"}},"patient":{"hospitalID":"1001","name":"Mitsuha","surename":"M"},"dose":{"medicine1":"1"},"status":"return"}')
     .end((err, res) => console.log(err, res.ok))
       
       
@@ -269,7 +244,7 @@ app.post('/confirm', (req, resp)=>{//Here
     .end((err,res) => {
       console.log(JSON.stringify(res.body))
       ans = res.body
-      patientHN = ans.patient.hn
+      patientHN = ans.patient.hospitalID
      })
   request
     .delete(`${url}/dispensary/${preID}.json`)
@@ -324,7 +299,7 @@ app.post('/return', (req, resp)=>{
     .end((err,res) => {
       console.log(JSON.stringify(res.body))
       ans = res.body
-      patientHN = ans.patient.hn
+      patientHN = ans.patient.hospitalID
      })
   request
     .delete(`${url}/dispensary/${preID}.json`)
